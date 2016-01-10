@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
@@ -50,6 +51,16 @@ namespace Hurricane.Music.Track.WebApi
             set
             {
                 SetProperty(value, ref _selectedTrack);
+            }
+        }
+
+        private IEnumerable _selectedTracks;
+        public IEnumerable SelectedTracks
+        {
+            get { return _selectedTracks; }
+            set
+            {
+                SetProperty(value, ref _selectedTracks);
             }
         }
 
@@ -175,13 +186,17 @@ namespace Hurricane.Music.Track.WebApi
                         _manager.RegisterPlaylist(newPlaylist);
                         playlist = newPlaylist;
                     }
-
-                    var track = SelectedTrack.ToPlayable();
-                    playlist.AddTrack(track);
+                    foreach (var t in SelectedTracks.Cast<WebTrackResultBase>())
+                    {
+                        var track = t.ToPlayable();
+                        playlist.AddTrack(track);
+                        if(t == SelectedTrack)
+                            _manager.SelectedTrack = track;
+                    }
                     IsLoading = false;
                     ViewModels.MainViewModel.Instance.MainTabControlIndex = 0;
                     _manager.SelectedPlaylist = playlist;
-                    _manager.SelectedTrack = track;
+                    //_manager.SelectedTrack = track;
                     _manager.SaveToSettings();
                     AsyncTrackLoader.Instance.RunAsync(playlist);
                     HurricaneSettings.Instance.Save();

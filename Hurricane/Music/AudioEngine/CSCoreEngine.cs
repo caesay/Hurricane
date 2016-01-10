@@ -164,7 +164,7 @@ namespace Hurricane.Music.AudioEngine
             get { return SoundSource != null ? _currentTrackPosition : TimeSpan.Zero; }
             protected set
             {
-                if ((int) value.TotalSeconds != (int) _currentTrackPosition.TotalSeconds) //If the seconds changed
+                if ((int)value.TotalSeconds != (int)_currentTrackPosition.TotalSeconds) //If the seconds changed
                     SetProperty(value, ref _currentTrackPosition);
             }
         }
@@ -246,8 +246,8 @@ namespace Hurricane.Music.AudioEngine
 
             if (PositionChanged != null)
                 PositionChanged(this,
-                    new PositionChangedEventArgs((int) CurrentTrackPosition.TotalSeconds,
-                        (int) CurrentTrackLength.TotalSeconds));
+                    new PositionChangedEventArgs((int)CurrentTrackPosition.TotalSeconds,
+                        (int)CurrentTrackLength.TotalSeconds));
         }
 
         private void value_EqualizerChanged(object sender, EqualizerChangedEventArgs e)
@@ -258,8 +258,8 @@ namespace Hurricane.Music.AudioEngine
         protected void SetEqualizerValue(double value, int number)
         {
             if (MusicEqualizer == null) return;
-            var perc = (value/100);
-            var newvalue = (float) (perc*MaxDB);
+            var perc = (value / 100);
+            var newvalue = (float)(perc * MaxDB);
             //the tag of the trackbar contains the index of the filter
             var filter = MusicEqualizer.SampleFilters[number];
             filter.AverageGainDB = newvalue;
@@ -308,7 +308,7 @@ namespace Hurricane.Music.AudioEngine
                     track.IsOpened = false;
                     IsLoading = false;
                     CurrentTrack = null;
-                    if (ExceptionOccurred != null) ExceptionOccurred(this, (Exception) result.CustomState);
+                    if (ExceptionOccurred != null) ExceptionOccurred(this, (Exception)result.CustomState);
                     StopPlayback();
                     return false;
             }
@@ -325,7 +325,7 @@ namespace Hurricane.Music.AudioEngine
             SoundSource = SoundSource
                 .AppendSource(x => Equalizer.Create10BandEqualizer(x.ToSampleSource()), out equalizer)
                 .AppendSource(x => new SingleBlockNotificationStream(x), out _singleBlockNotificationStream)
-                .AppendSource(x => new SimpleNotificationSource(x) {Interval = 100}, out _simpleNotificationSource)
+                .AppendSource(x => new SimpleNotificationSource(x) { Interval = 100 }, out _simpleNotificationSource)
                 .ToWaveSource(Settings.WaveSourceBits);
 
             MusicEqualizer = equalizer;
@@ -462,7 +462,10 @@ namespace Hurricane.Music.AudioEngine
 
         protected void OnPositionChanged()
         {
-            CurrentTrackPosition = TimeSpan.FromMilliseconds(SoundSource.WaveFormat.BytesToMilliseconds(Position));
+            if (SoundSource == null || SoundSource.WaveFormat == null)
+                CurrentTrackPosition = TimeSpan.Zero;
+            else
+                CurrentTrackPosition = TimeSpan.FromMilliseconds(SoundSource.WaveFormat.BytesToMilliseconds(Position));
             OnPropertyChanged("Position");
         }
 
@@ -485,8 +488,8 @@ namespace Hurricane.Music.AudioEngine
             _position = SoundSource.Position;
             OnPositionChanged();
 
-            var seconds = (int) CurrentTrackPosition.TotalSeconds;
-            var totalseconds = (int) CurrentTrackLength.TotalSeconds;
+            var seconds = (int)CurrentTrackPosition.TotalSeconds;
+            var totalseconds = (int)CurrentTrackLength.TotalSeconds;
             if (PositionChanged != null)
                 Application.Current.Dispatcher.Invoke(
                     () => PositionChanged(this, new PositionChangedEventArgs(seconds, totalseconds)));
@@ -559,13 +562,13 @@ namespace Hurricane.Music.AudioEngine
             double f;
             if (SoundSource != null)
             {
-                f = SoundSource.WaveFormat.SampleRate/2.0;
+                f = SoundSource.WaveFormat.SampleRate / 2.0;
             }
             else
             {
                 f = 22050; //44100 / 2
             }
-            return Convert.ToInt32((frequency/f)*(FFTSize/2));
+            return Convert.ToInt32((frequency / f) * (FFTSize / 2));
         }
     }
 }

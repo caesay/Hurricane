@@ -14,7 +14,7 @@ namespace Hurricane.Music.Track.WebApi.SoundCloudApi
 
         public override PlayableBase ToPlayable()
         {
-            var result = (ApiResult) Result;
+            var result = (STrack) Result;
             var newtrack = new SoundCloudTrack
             {
                 Url = Url,
@@ -33,12 +33,12 @@ namespace Hurricane.Music.Track.WebApi.SoundCloudApi
 
         public override bool CanDownload
         {
-            get { return ((ApiResult)Result).downloadable && !string.IsNullOrEmpty(((ApiResult)Result).download_url); }
+            get { return ((STrack)Result).downloadable == true && !string.IsNullOrEmpty(((STrack)Result).stream_url); }
         }
 
         public override string DownloadParameter
         {
-            get { return ((ApiResult)Result).id.ToString(); }
+            get { return ((STrack)Result).id.ToString(); }
         }
 
         public override string DownloadFilename

@@ -99,6 +99,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -191,6 +192,7 @@
     <Compile Include="DragDrop\TrackListDropHandler.cs" />
     <Compile Include="GUI\Behaviors\FrameworkElementBehavior.cs" />
     <Compile Include="GUI\Behaviors\ItemsControlAnimationBehavior.cs" />
+    <Compile Include="GUI\Behaviors\ListViewSelectedItemsBehavior.cs" />
     <Compile Include="GUI\Controls\AnimatedStackPanel.cs" />
     <Compile Include="GUI\Behaviors\AudioVisualisationBehavior.cs" />
     <Compile Include="GUI\Behaviors\TransitioningContentControlBehavior.cs" />
@@ -224,6 +226,7 @@
     <Compile Include="Music\Track\LocalTrackFragment.cs" />
     <Compile Include="Music\AudioEngine\CutSource.cs" />
     <Compile Include="Music\Track\CustomStream.cs" />
+    <Compile Include="Music\Track\WebApi\SoundCloudApi\ApiObjects.cs" />
     <Compile Include="Music\Track\WebApi\YouTubeApi\DataClasses\ContentSearchResult.cs" />
     <Compile Include="Music\Track\WebApi\YouTubeApi\DataClasses\IVideoInfo.cs" />
     <Compile Include="Music\Track\WebApi\YouTubeApi\DataClasses\PlaylistInfo\PlaylistInfo.cs" />
@@ -316,7 +319,6 @@
     <Compile Include="Music\Track\PlayableBase.cs" />
     <Compile Include="Music\Track\WebApi\LoadingTracksEventArgs.cs" />
     <Compile Include="Music\Track\WebApi\SoundCloudApi\SoundCloudApi.cs" />
-    <Compile Include="Music\Track\WebApi\SoundCloudApi\ApiResult.cs" />
     <Compile Include="Music\Track\WebApi\SoundCloudApi\SoundCloudWebTrackResult.cs" />
     <Compile Include="Music\Track\SoundCloudTrack.cs" />
     <Compile Include="Music\Track\StreamableBase.cs" />

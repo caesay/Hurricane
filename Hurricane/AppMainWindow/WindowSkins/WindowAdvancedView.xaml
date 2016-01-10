@@ -13,6 +13,7 @@
              xmlns:userControls="clr-namespace:Hurricane.Views.UserControls"
              xmlns:viewmodels="clr-namespace:Hurricane.ViewModels"
              xmlns:web="clr-namespace:Hurricane.Music.Track.WebApi"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              DataContext="{x:Static viewmodels:MainViewModel.Instance}"
              d:DesignHeight="500"
              d:DesignWidth="1000"
@@ -1138,6 +1139,7 @@
                                    Text="{DynamicResource NothingFound}"
                                    Visibility="{Binding MusicManager.TrackSearcher.NothingFound,
                                                         Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        <!--SelectedItems="{Binding MusicManager.TrackSearcher.SelectedTracks, Mode=OneWayToSource}"-->
                         <ListView Grid.Row="1"
                                   Background="Transparent"
                                   BorderThickness="0"
@@ -1146,6 +1148,9 @@
                                   Style="{StaticResource VisualizingListView}"
                                   behaviors:GridViewSort.AutoSort="True"
                                   listViewLayoutManager:ListViewLayoutManager.Enabled="True">
+                            <i:Interaction.Behaviors>
+                                <behaviors:ListViewSelectedItemsBehavior SelectedItems="{Binding MusicManager.TrackSearcher.SelectedTracks, Mode=OneWayToSource}" />
+                            </i:Interaction.Behaviors>
                             <ListView.Resources>
                                 <converter:FormatLargeNumber x:Key="FormatLargeNumber" />
                                 <ContextMenu x:Key="ContextMenu" DataContext="{Binding RelativeSource={RelativeSource AncestorType=ListView}, Path=DataContext}">

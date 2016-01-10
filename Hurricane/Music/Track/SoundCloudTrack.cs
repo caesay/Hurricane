@@ -32,24 +32,24 @@ namespace Hurricane.Music.Track
         {
             using (var web = new WebClient { Proxy = null })
             {
-                var result = JsonConvert.DeserializeObject<ApiResult>(await web.DownloadStringTaskAsync(string.Format("https://api.soundcloud.com/tracks/{0}.json?client_id={1}", SoundCloudID, SensitiveInformation.SoundCloudKey)));
+                var result = JsonConvert.DeserializeObject<STrack>(await web.DownloadStringTaskAsync(string.Format("https://api.soundcloud.com/tracks/{0}.json?client_id={1}", SoundCloudID, SensitiveInformation.SoundCloudKey)));
                 return LoadInformation(result);
             }
         }
 
-        public bool LoadInformation(ApiResult result)
+        public bool LoadInformation(STrack result)
         {
-            if (!result.IsStreamable) return false;
-            Year = result.release_year != null
-                ? uint.Parse(result.release_year.ToString())
-                : (uint)DateTime.Parse(result.created_at).Year;
+            if (result.streamable == false) return false;
+            //Year = result.release_year != null
+            //    ? uint.Parse(result.release_year.ToString())
+            //    : (uint)DateTime.Parse(result.created_at).Year;
             Title = result.title;
             ArtworkUrl = result.artwork_url != null ? result.artwork_url.Replace("large.jpg", "{0}.jpg") : string.Empty;
             Artist = result.user.username;
             Genres = new List<Genre> { StringToGenre(result.genre) };
             SoundCloudID = result.id;
             Uploader = result.user.username;
-            Downloadable = result.downloadable;
+            Downloadable = result.downloadable == true;
             SetDuration(TimeSpan.FromSeconds(result.duration));
             return true;
         }
